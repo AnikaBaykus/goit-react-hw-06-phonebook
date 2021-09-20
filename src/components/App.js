@@ -7,6 +7,7 @@ import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import Notification from './Notification';
+// import { connect } from 'react-redux';
 
 export default function App() {
   const [contacts, setContacts] = useState([]);
@@ -50,12 +51,6 @@ export default function App() {
     setFilter(event.currentTarget.value);
   };
 
-  const normalizedFilter = filter.toLowerCase();
-
-  const visibleContact = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter),
-  );
-
   const deleteContact = contactId => {
     setContacts(contacts.filter(contact => contact.id !== contactId));
   };
@@ -69,10 +64,7 @@ export default function App() {
         {contacts.length > 0 ? (
           <>
             <Filter value={filter} onChange={filterChange}></Filter>
-            <ContactList
-              contacts={visibleContact}
-              onDeleteContact={deleteContact}
-            ></ContactList>
+            <ContactList></ContactList>
           </>
         ) : (
           <Notification message="No contacts"></Notification>
@@ -81,3 +73,21 @@ export default function App() {
     </Container>
   );
 }
+
+// const mapStateToProps = state => {
+//   return {
+
+//   }
+// };
+
+// const mapDispatchToProps = dispatch = {
+//   return {
+
+//   }
+// };
+
+// mergeProps
+
+// options
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App);

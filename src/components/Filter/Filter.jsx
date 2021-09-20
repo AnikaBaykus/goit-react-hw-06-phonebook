@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import s from './Filter.module.css';
+import { connect } from 'react-redux';
+import { filterChange } from '../../redux/phonebook/phonebook-actions.js';
 
 function Filter({ value, onChange }) {
   const inputID = uuidv4();
@@ -21,10 +23,17 @@ function Filter({ value, onChange }) {
     </div>
   );
 }
+const mapStateToProps = state => ({
+  value: state.contacts.filter,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onChange: event => dispatch(filterChange(event.target.value)),
+});
 
 Filter.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default Filter;
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
