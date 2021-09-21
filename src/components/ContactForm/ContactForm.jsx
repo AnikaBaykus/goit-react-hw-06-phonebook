@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import s from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addContact } from '../../redux/phonebook/phonebook-actions.js';
+import * as phonebookActions from '../../redux/phonebook/phonebook-actions.js';
 
 function ContactForm(options) {
   const [name, setName] = useState('');
@@ -77,7 +77,8 @@ ContactForm.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) => dispatch(addContact(name, number)),
+  onSubmit: (name, number) =>
+    dispatch(phonebookActions.addContact(name, number)),
 });
 
 export default connect(null, mapDispatchToProps)(ContactForm);

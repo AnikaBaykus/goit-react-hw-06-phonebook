@@ -5,6 +5,7 @@ const items = (state = [], { type, payload }) => {
   switch (type) {
     case ADD:
       return [...state, payload];
+
     case DELETE:
       return state.filter(contact => contact.id !== payload);
 
