@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import s from './ContactForm.module.css';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as phonebookActions from '../../redux/phonebook/phonebook-actions.js';
+// import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/phonebook/phonebook-actions.js';
 
-function ContactForm(options) {
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
   const formNameId = uuidv4();
   const formNumberId = uuidv4();
+
+  const contacts = useSelector(state => state.contacts.items);
+  const dispatch = useDispatch();
 
   const handleChangeName = event => {
     setName(event.currentTarget.value);
@@ -27,7 +32,16 @@ function ContactForm(options) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    options.onSubmit(name, number);
+    const findCopyContact = contacts
+      .map(contact => contact.name.toLowerCase())
+      .includes(name.toLowerCase());
+
+    if (findCopyContact) {
+      alert(`${name} is already in contacts.`);
+    } else {
+      dispatch(addContact(name, number));
+    }
+    // options.onSubmit(name, number);
     resetForm();
   };
 
@@ -72,13 +86,12 @@ function ContactForm(options) {
   );
 }
 
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
+// ContactForm.propTypes = {
+//   onSubmit: PropTypes.func.isRequired,
+// };
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) =>
-    dispatch(phonebookActions.addContact(name, number)),
-});
+// const mapDispatchToProps = dispatch => ({
+//   onSubmit: (name, number) => dispatch(addContact(name, number)),
+// });
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+// export default connect(null, mapDispatchToProps)(ContactForm);
